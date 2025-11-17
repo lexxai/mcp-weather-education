@@ -1,0 +1,25 @@
+# docker compose build backend && docker compose up --build -d && docker compose logs -f backend
+
+name: mcp-weather
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        PYTHON_VERSION: ${PYTHON_VERSION:-3.14}
+        PYTHON_APP: ${PYTHON_APP:-}
+        REPO_BUILDER: ${REPO_BUILDER:-}
+        EXTRA: ${EXTRA:-cpu}
+        UV_PYTHON: ${UV_PYTHON:-}
+        APP_PORT: ${APP_PORT:-8000}
+    volumes:
+#      - ./src:/app/src
+      - uv_cache:/root/.cache/uv
+#      - models:/app/data/models
+    ports:
+      - "${APP_PORT:-8000}:${APP_PORT:-8000}"
+
+
+volumes:
+  uv_cache:

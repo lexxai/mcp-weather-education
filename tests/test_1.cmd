@@ -9,4 +9,4 @@ rem echo {"jsonrpc": "2.0", "id": 1, "method": "tools/list"} | uv run weather.py
   echo {"jsonrpc":"2.0","method":"notifications/initialized","params":null}
   timeout /t 1 >nul
   echo {"jsonrpc": "2.0", "id": 1, "method": "tools/list", "params": null}
-) | uv run ..\weather.py
+) | uv run ..\src\weather.py

@@ -1,5 +1,7 @@
-from typing import Any
 import logging
+import os
+from typing import Any
+
 import httpx
 from mcp.server.fastmcp import FastMCP
 
@@ -8,7 +10,8 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 # Initialize FastMCP server
-mcp = FastMCP("weather")
+port = os.environ.get("APP_PORT", 8000)
+mcp = FastMCP("weather", host="0.0.0.0", port=port)
 
 # Constants
 NWS_API_BASE = "https://api.weather.gov"
