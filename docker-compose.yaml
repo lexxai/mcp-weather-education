@@ -2,7 +2,7 @@
 
 name: mcp-weather
 services:
-  api:
+  mcp-weather:
     build:
       context: .
       dockerfile: Dockerfile
@@ -21,7 +21,6 @@ services:
       - "${APP_PORT:-8000}:${APP_PORT:-8000}"
     networks:
       - ai-net
-
 
 volumes:
   uv_cache:
