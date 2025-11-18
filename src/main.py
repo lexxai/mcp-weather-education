@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi_mcp import FastApiMCP
 
 from pydantic import BaseModel, Field
 
@@ -8,7 +9,7 @@ from weather import (
     get_forecast_international as _get_forecast_international,
 )
 
-app = FastAPI(title="OpenAI-Compatible API")
+app = FastAPI(title="MCP OpenAPI-Compatible API server for weather")
 
 
 class Coordinates(BaseModel):
@@ -59,6 +60,11 @@ async def get_forecast_international(req: Coordinates) -> str:
         longitude: Longitude of the location (-180 to 180)
     """
     return await _get_forecast_international(req.latitude, req.longitude)
+
+
+mcp = FastApiMCP(app, name="MCP [see] server for weather")
+
+mcp.mount_http()
 
 
 if __name__ == "__main__":

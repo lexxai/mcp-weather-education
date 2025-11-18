@@ -44,3 +44,29 @@ docker-compose logs -f
     }
   }
 }
+
+
+## OpenAPI
+/openapi.json
+
+```json
+{
+  "mcp-weather": {
+    "type": "openapi",
+    "url": "http://localhost:8000/openapi.json"
+  }
+}
+```
+
+
+## MCP (sse)
+/mcp
+
+```json
+{
+  "mcp-weather": {
+    "type": "sse",
+    "url": "http://localhost:8000/mcp"
+  }
+}
+```

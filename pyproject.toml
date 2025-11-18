@@ -5,6 +5,7 @@ description = "Add your description here"
 requires-python = ">=3.14"
 dependencies = [
     "fastapi>=0.121.2",
+    "fastapi-mcp>=0.4.0",
     "httpx>=0.28.1",
     "mcp[cli]>=1.21.1",
 ]
