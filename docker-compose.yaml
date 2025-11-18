@@ -19,7 +19,14 @@ services:
 #      - models:/app/data/models
     ports:
       - "${APP_PORT:-8000}:${APP_PORT:-8000}"
+    networks:
+      - ai-net
 
 
 volumes:
   uv_cache:
+
+networks:
+  ai-net:
+    external: true
+
