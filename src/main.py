@@ -13,11 +13,9 @@ app = FastAPI(title="MCP OpenAPI-Compatible API server for weather")
 
 
 class Coordinates(BaseModel):
-    latitude: float | None = Field(
-        None, ge=-90, le=90, description="Latitude of the location"
-    )
-    longitude: float | None = Field(
-        None, ge=-180, le=180, description="Longitude of the location"
+    latitude: float = Field(..., ge=-90, le=90, description="Latitude of the location")
+    longitude: float = Field(
+        ..., ge=-180, le=180, description="Longitude of the location"
     )
 
 
@@ -43,7 +41,7 @@ async def get_alerts_us(state: str | None = None) -> str:
     operation_id="get_forecast_us",
     summary="Get US forecast",
 )
-async def get_forecast_us(req: Coordinates | None = None) -> str:
+async def get_forecast_us(req: Coordinates) -> str:
     """Get weather forecast for a location in US.
 
     Args:
@@ -56,7 +54,7 @@ async def get_forecast_us(req: Coordinates | None = None) -> str:
 
 
 @app.post("/get_forecast_international", operation_id="get_forecast_international")
-async def get_forecast_international(req: Coordinates | None = None) -> str:
+async def get_forecast_international(req: Coordinates) -> str:
     """Get weather forecast for any international location.
 
     Args:
