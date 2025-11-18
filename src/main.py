@@ -5,7 +5,7 @@ from weather import get_alerts_us as _get_alerts_us, get_forecast_us as _get_for
 
 app = FastAPI(title="OpenAI-Compatible API")
 
-@app.post("/get_alerts_us")
+@app.get("/get_alerts_us")
 async def get_alerts_us(state: str) -> str:
     """Get weather alerts for a US state.
 
@@ -15,7 +15,7 @@ async def get_alerts_us(state: str) -> str:
     return await _get_alerts_us(state)
 
 
-@app.post("/get_forecast_us")
+@app.get("/get_forecast_us")
 async def get_forecast_us(latitude: float, longitude: float) -> str:
     """Get weather forecast for a location in US.
 
@@ -27,7 +27,7 @@ async def get_forecast_us(latitude: float, longitude: float) -> str:
 
 
 
-@app.post("/get_forecast_international")
+@app.get("/get_forecast_international")
 async def get_forecast_international(latitude: float, longitude: float) -> str:
     """Get weather forecast for any international location.
 
