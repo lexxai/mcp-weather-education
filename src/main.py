@@ -1,12 +1,30 @@
 from fastapi import FastAPI
-# from pydantic import BaseModel
 
-from weather import get_alerts_us as _get_alerts_us, get_forecast_us as _get_forecast_us, get_forecast_international as _get_forecast_international
+from pydantic import BaseModel, Field
+
+from weather import (
+    get_alerts_us as _get_alerts_us,
+    get_forecast_us as _get_forecast_us,
+    get_forecast_international as _get_forecast_international,
+)
 
 app = FastAPI(title="OpenAI-Compatible API")
 
-@app.get("/get_alerts_us", operation_id="get_alerts_us")
-async def get_alerts_us(state: str|None = None) -> str:
+
+class Coordinates(BaseModel):
+    latitude: float = Field(..., ge=-90, le=90, description="Latitude of the location")
+    longitude: float = Field(
+        ..., ge=-180, le=180, description="Longitude of the location"
+    )
+
+
+@app.get(
+    "/get_alerts_us",
+    operation_id="get_alerts_us",
+    summary="Get US Alerts",
+    description="Returns weather alerts for a US state. Requires a two-letter state code.",
+)
+async def get_alerts_us(state: str | None = None) -> str:
     """Get weather alerts for a US state.
 
     Args:
@@ -17,32 +35,33 @@ async def get_alerts_us(state: str|None = None) -> str:
     return await _get_alerts_us(state)
 
 
-@app.get("/get_forecast_us", operation_id="get_forecast_us")
-async def get_forecast_us(latitude: float | None = None, longitude: float | None = None) -> str:
+@app.post(
+    "/get_forecast_us",
+    operation_id="get_forecast_us",
+    summary="Get US forecast",
+)
+async def get_forecast_us(req: Coordinates) -> str:
     """Get weather forecast for a location in US.
 
     Args:
         latitude: Latitude of the location (-90 to 90)
         longitude: Longitude of the location (-180 to 180)
     """
-    if not latitude or not longitude:
-        return "Please provide latitude and longitude."
-    return await _get_forecast_us(latitude, longitude)
+    return await _get_forecast_us(req.latitude, req.longitude)
 
 
-
-@app.get("/get_forecast_international", operation_id="get_forecast_international")
-async def get_forecast_international(latitude: float | None = None, longitude: float | None = None) -> str:
+@app.post("/get_forecast_international", operation_id="get_forecast_international")
+async def get_forecast_international(req: Coordinates) -> str:
     """Get weather forecast for any international location.
 
     Args:
         latitude: Latitude of the location (-90 to 90)
         longitude: Longitude of the location (-180 to 180)
     """
-    if not latitude or not longitude:
-        return "Please provide latitude and longitude."
-    return await _get_forecast_international(latitude,longitude)
+    return await _get_forecast_international(req.latitude, req.longitude)
+
 
 if __name__ == "__main__":
     import uvicorn
+
     uvicorn.run(app, host="0.0.0.0", port=8000)
