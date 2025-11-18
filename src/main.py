@@ -51,7 +51,7 @@ async def get_forecast_us(req: Coordinates | None = None) -> str:
         longitude: Longitude of the location (-180 to 180)
     """
     if not req or req.latitude is None or req.longitude is None:
-        return "Please provide latitude and longitude (e.g., 40.7, -74.0)"
+        return "Please provide latitude and longitude as a JSON object."
     return await _get_forecast_us(req.latitude, req.longitude)
 
 
